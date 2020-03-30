@@ -18,12 +18,10 @@ export default class Tablero extends React.Component {
     super(props)
     this.state = { casillas: props.casillas }
     this.casillas = JSON.parse(JSON.stringify(props.casillas))
-    this.valor = null;
   }
 
   limpiar = () => {
-    this.valor = null;
-    this.setState({ casillas: this.casillas })
+    this.setState({ casillas: JSON.parse(JSON.stringify(this.casillas)) })
   }
 
   girar = () => {
@@ -43,16 +41,10 @@ export default class Tablero extends React.Component {
   pulsar = (x, y) => {
     let casillas = this.state.casillas.slice()
     let casilla = casillas[y][x];
-    const indice = this.props.valores.findIndex(
+    const indice = casilla.valores.findIndex(
       valor => valor === casilla.valor
     )
-    if (indice === 0 && this.valor) {
-      casilla.valor = this.valor
-    }
-    else {
-      casilla.valor = this.props.valores[indice < this.props.valores.length - 1 ? indice + 1 : 0]
-      this.valor = casilla.valor
-    }
+    casilla.valor = casilla.valores[indice < casilla.valores.length - 1 ? indice + 1 : 0]
     casillas[y][x] = casilla
     this.setState({ casillas: casillas })
   };
